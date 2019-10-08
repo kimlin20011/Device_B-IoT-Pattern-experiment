@@ -1,7 +1,7 @@
 //emit QueryEvent(_deviceID,now,msg.sender,identifier);  //callbackAddress means the contract who call QueryRegistry
 "use strict";
 const fs = require('fs');
-//const request = require('request')
+const request = require('request')
 const config = require('../../configs/config');
 let gethWebsocketUrl = config.geth.gethWebsocketUrl;
 const Web3 = require('web3');
@@ -18,13 +18,28 @@ module.exports = async function listenQueryEvent() {
     QueryRegistry.events.QueryEvent({})
         .on('data', function (event) {
             let result = {};
-            result.deviceID=event.returnValues.deviceID;
-            result.timestamp=event.returnValues.timestamp;
-            result.identifier=event.returnValues.identifier;
+            result.deviceID = event.returnValues.deviceID;
+            result.timestamp = event.returnValues.timestamp;
+            result.identifier = event.returnValues.identifier;
             let result_event = JSON.stringify(result);
             fs.writeFileSync('./queryEventListen.json', result_event);
-            console.log(`成功監聽到QueryRegistry event`);
+            console.log(`成功監聽到QueryRegistry event\n`);
             console.log(result);
+
+            console.log(`執行callback函數\n`);
+            result.callbackData = `callbackDataTest`
+            request.post({
+                url: "http://localhost:3002/oei/callback",
+                body: result,
+                json: true,
+            }, function (err, httpResponse, body) {
+                if (err) {
+                    console.error(err)
+                } else {
+                    console.log(body);
+                }
+            });
+
         })
         .on('error', function (error) {
             let result = {};
@@ -38,34 +53,3 @@ module.exports = async function listenQueryEvent() {
 
 
 };
-
-
-// oracle.events.oracleQueryEvent({
-//     filter: {deviceID: `${data.deviceID}`}, //filter of deviceID
-// }, function(error, event){
-//     if(error) {
-//         console.log(`bad!!`)
-//         console.log(error);
-//         return;
-//     }
-//     console.log(`good!!`)
-//     console.log(event);
-//     //存取資料
-//     metadata.CC_ID= event.returnValues.queryID;
-//     //metadata.info= event.returnValues.info;
-//     metadata.timestamp =event.returnValues.timestamp;
-//     metadata.callbackAddress= event.returnValues.callbackAddress;
-
-//     cc.options.address = event.returnValues.callbackAddress;
-//     //先檢查是否存取過相同比資料
-//     console.log(metadata);
-//     //收到oracle event後來發送addstatus api資料
-//     //let obj =metadata;
-//     request.post({
-//         url:"http://localhost:3011/device/oracleCallback",
-//         body: metadata,
-//         json: true,
-//     }, function(err,httpResponse,body){
-//         console.log(body);
-//     });
-// });

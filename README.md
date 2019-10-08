@@ -42,7 +42,13 @@
 >HTTP Method: POST 
 >URL:http://localhost:3001/oei/deployConsumer 
 
-#### API(3)- queryData
+#### API(3)-listenCallbackEvent
+>部署完成先做這步，監聽是否有來自Device端的callback資料
+>
+>HTTP Method: GET 
+>URL:http://localhost:3001/oei/listenCallbackEvent 
+
+#### API(4)- queryData
 >edge向device要求匯集資料
 >
 >HTTP Method: POST 

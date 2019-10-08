@@ -1,11 +1,15 @@
 //solcjs -o ../migrates --bin --abi oei.sol
-
 pragma solidity ^0.5.2;
 contract QueryRegistry {
+    uint nonce;
     event QueryEvent(uint indexed deviceID,uint timestamp,address callbackAddress, bytes32 identifier);
 
     function query(uint _deviceID, address _invokeAddress) public returns(bytes32){
-        bytes32 identifier = (keccak256(abi.encodePacked(now, _invokeAddress, _deviceID))); 
+        nonce++;
+        if (nonce == 10000) {
+        nonce = 0;
+        }
+        bytes32 identifier = (keccak256(abi.encodePacked(now, _invokeAddress, _deviceID , nonce))); 
         emit QueryEvent(_deviceID,now,msg.sender,identifier);  //callbackAddress means the contract who call QueryRegistry
         return identifier;
     }

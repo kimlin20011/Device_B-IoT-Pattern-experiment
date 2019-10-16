@@ -1,12 +1,13 @@
 # 區塊鏈感測資料匯集樣式實驗測試
 
-> 程式碼部分
->> Edge:https://github.com/kimlin20011/B-IoT-Pattern-experiment
->> IoT:https://github.com/kimlin20011/Device_B-IoT-Pattern-experiment
+* 程式碼部分
+    * Edge: https://github.com/kimlin20011/B-IoT-Pattern-experiment
+    * IoT: https://github.com/kimlin20011/Device_B-IoT-Pattern-experiment
 
 ## 時程
-* 先把實驗環境實作出來(OEI-OFEI-ODP)
-* 按照-吞吐量/響應時間/memory與記憶體只順序做
+* ~~先把實驗環境實作出來(OEI-OFEI-ODP)~~
+* 按照-響應時間/memory/記憶體只順序做（畫圖）
+* 論述安全性部分
 
 ## 下一個步驟
 * 先把OEI callback回傳部分實作完成
@@ -28,47 +29,118 @@
 ![](https://i.imgur.com/umj5AfA.png)
 
 
-## 實作API
-
-
+## 實作
+## 測試模組
+* response time
+    * 30次/100次/500次
+    * Edge： experiments/oei_ReponseTime.js
 ## API
+### OEI API呼叫順序
+* Edge
+    * deploy QueryRegistry contract
+    * deploy Authorization contract 
+    * listenCallbackEvent
+* Device
+    * 更改新的contract address
+    * listenQueryEvent(監聽到Event後自動發出callback API)
+
+### OFEI API呼叫順序
+* Edge
+    * deploy QueryRegistry contract
+    * whisperSubscribe
+* Device
+    * 更改新的contract address
+    * listenQueryEvent
+* Edge
+    * queryData（Device監聽到Event後自動）
 
 ### Edge端
-#### API(1)-deploy QueryRegistry contract
+
+#### OEI部分
+##### API(1)-deploy QueryRegistry contract
 >HTTP Method: POST 
 >URL:http://localhost:3001/oei/deployQueryRegistry 
 
-#### API(2)-deploy Authorization contract 
+##### API(2)-deploy Authorization contract 
 >HTTP Method: POST 
 >URL:http://localhost:3001/oei/deployConsumer 
 
-#### API(3)-listenCallbackEvent
+##### API(3)-listenCallbackEvent
 >部署完成先做這步，監聽是否有來自Device端的callback資料
 >
 >HTTP Method: GET 
 >URL:http://localhost:3001/oei/listenCallbackEvent 
 
-#### API(4)- queryData
+##### API(4)- queryData
 >edge向device要求匯集資料
 >
 >HTTP Method: POST 
 >URL:http://localhost:3001/oei/queryData
->>Body(x-www-form-urlencoded):   
+>>Body(x-www-form-urlencoded): 
 >>>deviceID: string
+
+#### OFEI部分
+##### API(1)-deploy QueryRegistry contract
+* 部署合約
+>HTTP Method: POST 
+>URL:http://localhost:3001/ofei/deployQueryRegistry
+
+
+##### API(2)-whisperSubscribe
+* 先產生whisper keypair，並開始監聽whisper信息
+>HTTP Method: GET 
+>URL:http://localhost:3001/ofei/whisperSubscribe
+
+
+##### API(3)-queryData
+* Edge向Device發出感測資料呼叫請求，並將whisper 公鑰同時送上合約儲存
+>HTTP Method: POST 
+>URL:http://localhost:3001/ofei/queryData
+>>Body(x-www-form-urlencoded):   
+>>>deviceID: uint
+>>>queryTopic：string
 
 
 ### deivce端
-#### API(1)-listenQueryEvent
->部署完成先做這步，監聽是否有來自Edge端的資料請求
+#### OEI
+##### API(1)-listenQueryEvent
+* 部署完成先做這步，監聽是否有來自Edge端的資料請求
 >
 >HTTP Method: GET 
 >URL:http://localhost:3002/oei/listenQueryEvent 
 
-#### API(2)-callback 
->監聽到資料請求後，收集資料，並回傳
+##### API(2)-callback 
+* 監聽到資料請求後，收集資料，並回傳
 >
 >HTTP Method: POST 
 >URL:http://localhost:3002/oei/callback 
+
+
+#### OFEI部分
+##### API(1)-deploy QueryRegistry contract
+* 在Device部署合約
+>HTTP Method: POST 
+>URL:http://localhost:3002/ofei/deployQueryRegistry
+
+
+##### API(2)-listenQueryEvent
+* 監聽智能合約query event，若有監聽到event則開始收集感測資料，並呼叫dataCallbackByWhisper API 透過whisper回傳message
+>HTTP Method: GET 
+>URL:http://localhost:3002/ofei/listenQueryEvent
+
+##### API(3)-dataCallbackByWhisper
+* 這個API不需要使用者來呼叫，實作利用whisper協議回傳訊息
+>HTTP Method: POST 
+>URL:http://localhost:3002/ofei/dataCallbackByWhisper
+>>Body(x-www-form-urlencoded):   
+>>>msg: string
+
+
+
+#### autocannon嘗試
+```shell=
+autocannon -c 100 -d 5 -p 2  -b [deviceID:123] -m 'POST' http://localhost:3001/oei/queryData
+```
 
 
 ## feeback
@@ -122,6 +194,7 @@
         * 可以用koa做(很好用)
             * 工具：[autocannon](https://github.com/mcollina/autocannon)
                 * [使用方法簡介文章](https://juejin.im/post/5b827cbbe51d4538c021f2da)
+                * [使用方法簡介文章2](https://zhuanlan.zhihu.com/p/72597640)
     * 響應時間
         * response time
         * 可以用koa做
@@ -159,7 +232,19 @@
 
 ### 參考資料
 * [PID測試模組](https://github.com/soyuka/pidusage?fbclid=IwAR0UkAYORqBGfxZ72OPglPSrZjfIShFy3PGqZz0ufXdIYkay6MGo3ui9eZE)
+* [[軟體效能測試] 什麼是效能測試](https://kojenchieh.pixnet.net/blog/post/463740968-%5B%E8%BB%9F%E9%AB%94%E6%95%88%E8%83%BD%E6%B8%AC%E8%A9%A6%5D-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%95%88%E8%83%BD%E6%B8%AC%E8%A9%A6)
+* [匯出CSV](https://dotblogs.com.tw/shihgogo/2017/05/31/090831)
+* [如何測精確的發送時間](https://jj09.net/properly-measuring-http-request-time-with-node-js/)
 
+* [測來回時間](https://stackoverflow.com/questions/29036313/node-js-measure-response-time-with-multiple-requests)
+* [excel中以vlookup合併儲存格](https://support.office.com/zh-hk/article/%E6%88%91%E8%A6%81%E5%A6%82%E4%BD%95%E5%90%88%E4%BD%B5%E5%85%A9%E5%80%8B%E4%BB%A5%E4%B8%8A%E7%9A%84%E8%A1%A8%E6%A0%BC%EF%BC%9F-c80a9fce-c1ab-4425-bb96-497dd906d656)
+    * ex：查詢id = a 的響應時間
+
+```
+=VLOOKUP(B1,$M$1:$O$5,2,FALSE)
+```
+
+* [node process memoryUsage](http://nodejs.cn/api/process.html#process_process_memoryusage)
         
 
 ###### tags: `區塊鏈物聯網研究`

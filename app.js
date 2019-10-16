@@ -35,3 +35,4 @@ app.use(routers.routes()).use(routers.allowedMethods());
 // listen port
 app.listen( config.port );
 console.log(`the resource server(Koa2) is start at port ${config.port}`);
+console.log(`Process ID: ${process.pid}`);

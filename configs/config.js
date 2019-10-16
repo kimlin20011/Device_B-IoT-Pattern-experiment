@@ -7,6 +7,8 @@ const Consumer_Abi = JSON.parse(fs.readFileSync('./migrates/oei_sol_Consumer.abi
 const Consumer_Bytecode = '0x' + fs.readFileSync('./migrates/oei_sol_Consumer.bin').toString();
 const QueryRegistry_Abi = JSON.parse(fs.readFileSync('./migrates/oei_sol_QueryRegistry.abi').toString());
 const QueryRegistry_Bytecode = '0x' + fs.readFileSync('./migrates/oei_sol_QueryRegistry.bin').toString();
+const OFEI_QueryRegistry_Abi = JSON.parse(fs.readFileSync('./migrates/ofei_sol_QueryRegistry.abi').toString());
+const OFEI_QueryRegistry_Bytecode = '0x' + fs.readFileSync('./migrates/ofei_sol_QueryRegistry.bin').toString();
 
 module.exports ={
     port: 3002,
@@ -18,11 +20,15 @@ module.exports ={
         abi: QueryRegistry_Abi,
         bytecode: QueryRegistry_Bytecode,
     },
+    OFEI_QueryRegistry: {
+        abi: OFEI_QueryRegistry_Abi,
+        bytecode: OFEI_QueryRegistry_Bytecode,
+    },
     geth: {
         account: `0xe8902cf406d7547fc3f69a2f463eb1463aa6b978`,
         //暫時不用
         password: process.env.password,
-        gethWebsocketUrl:`ws://localhost:8545`,
+        gethWebsocketUrl:`ws://localhost:8546`,
         //keystoreDir:`C:\\Users\\nccu\\implement\\chain_new\\data\\keystore`
         keystoreDir:`/Users/nccu/Documents/implement/chain_new/data/keystore`
     },

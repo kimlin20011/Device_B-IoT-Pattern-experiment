@@ -10,11 +10,9 @@
 * 論述安全性部分
 
 ## 下一個步驟
-* 先把OEI callback回傳部分實作完成
 * OEI測試（順序）
-    * throughput
-    * response time
     * memory
+    * 話OEI-OFEI比較圖
 
 ## 宣稱部分
 * 宣稱部分
@@ -71,11 +69,37 @@
 >HTTP Method: GET 
 >URL:http://localhost:3001/oei/listenCallbackEvent 
 
-##### API(4)- queryData
+
+##### API(4)- addVaildDevice
+* 增加有權修改或新增QueryRegistry中感測資料的device address
+
+>HTTP Method: POST 
+>URL:http://localhost:3001/oei/addVaildDevice
+>>Body(x-www-form-urlencoded): 
+>>>deviceAddress: string
+
+
+##### API(5)- queryData
 >edge向device要求匯集資料
 >
 >HTTP Method: POST 
 >URL:http://localhost:3001/oei/queryData
+>>Body(x-www-form-urlencoded): 
+>>>deviceID: string
+
+#### OEI部分實驗
+
+##### API(1)-listenCallbackEvent_PID
+>部署完成先做這步，監聽是否有來自Device端的callback資料
+>
+>HTTP Method: GET 
+>URL:http://localhost:3001/oei/listenCallbackEvent_PID 
+
+##### API(2)- queryData_PID
+>edge向device要求匯集資料
+>
+>HTTP Method: POST 
+>URL:http://localhost:3001/oei/queryData_PID
 >>Body(x-www-form-urlencoded): 
 >>>deviceID: string
 

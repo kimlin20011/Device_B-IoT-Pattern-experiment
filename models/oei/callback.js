@@ -8,11 +8,11 @@ const web3 = new Web3(Web3.givenProvider || gethWebsocketUrl);
 const unlockAccount = require('../unlock');
 
 module.exports = async function callback(data) {
-    let Consumer_Abi = config.Consumer.abi;
+    let QueryRegistry_Abi = config.QueryRegistry.abi;
     //取得目前geth中第一個account
     let password = config.geth.password;
-    let Consumer_Address = fs.readFileSync('./Consumer_Address.txt').toString();
-    let Consumer = new web3.eth.Contract(Consumer_Abi,Consumer_Address);
+    let QueryRegistry_Address = fs.readFileSync('./QueryRegistry_Address.txt').toString();
+    let QueryRegistry = new web3.eth.Contract(QueryRegistry_Abi,QueryRegistry_Address);
 
     //取得目前geth中第一個account
     let nowAccount = "";
@@ -29,7 +29,7 @@ module.exports = async function callback(data) {
         console.log(data);
         let result ={};
 
-        Consumer.methods
+        QueryRegistry.methods
             .callback(data.callbackData,data.identifier)
             .send({
                 from: nowAccount,

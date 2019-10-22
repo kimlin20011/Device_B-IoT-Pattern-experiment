@@ -3,10 +3,10 @@ const fs = require('fs');
 require('dotenv').config();
 
 //讀進合約abi,bytecode
-const Consumer_Abi = JSON.parse(fs.readFileSync('./migrates/oei_sol_Consumer.abi').toString());
-const Consumer_Bytecode = '0x' + fs.readFileSync('./migrates/oei_sol_Consumer.bin').toString();
-const QueryRegistry_Abi = JSON.parse(fs.readFileSync('./migrates/oei_sol_QueryRegistry.abi').toString());
-const QueryRegistry_Bytecode = '0x' + fs.readFileSync('./migrates/oei_sol_QueryRegistry.bin').toString();
+const Consumer_Abi = JSON.parse(fs.readFileSync('./migrates/oei_new_sol_Consumer.abi').toString());
+const Consumer_Bytecode = '0x' + fs.readFileSync('./migrates/oei_new_sol_Consumer.bin').toString();
+const QueryRegistry_Abi = JSON.parse(fs.readFileSync('./migrates/oei_new_sol_QueryRegistry.abi').toString());
+const QueryRegistry_Bytecode = '0x' + fs.readFileSync('./migrates/oei_new_sol_QueryRegistry.bin').toString();
 const OFEI_QueryRegistry_Abi = JSON.parse(fs.readFileSync('./migrates/ofei_sol_QueryRegistry.abi').toString());
 const OFEI_QueryRegistry_Bytecode = '0x' + fs.readFileSync('./migrates/ofei_sol_QueryRegistry.bin').toString();
 

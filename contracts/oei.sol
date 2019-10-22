@@ -10,7 +10,7 @@ contract QueryRegistry {
         nonce = 0;
         }
         bytes32 identifier = (keccak256(abi.encodePacked(now, _invokeAddress, _deviceID , nonce))); 
-        emit QueryEvent(_deviceID,now,msg.sender,identifier);  //callbackAddress means the contract who call QueryRegistry
+        emit QueryEvent(_deviceID,now,_invokeAddress,identifier);  //callbackAddress means the contract who call QueryRegistry
         return identifier;
     }
 }

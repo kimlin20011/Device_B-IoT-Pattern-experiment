@@ -24,7 +24,7 @@ module.exports = async function listenQueryEvent() {
             let result_event = JSON.stringify(result);
             fs.writeFileSync('./queryEventListen.json', result_event);
             console.log(`成功監聽到QueryRegistry event\n`);
-            console.log(result);
+            //console.log(result);
 
             console.log(`執行callback函數\n`);
             result.callbackData = `callbackDataTest`

@@ -32,6 +32,10 @@
 * response time
     * 30次/100次/500次
     * Edge： experiments/oei_ReponseTime.js
+* CPU/memory
+    * 每10秒發送一次10筆資料
+    * 每10秒發送一次50筆資料
+    * 每10秒發送一次100筆資料
 ## API
 ### OEI API呼叫順序
 * Edge
@@ -103,7 +107,20 @@
 >>Body(x-www-form-urlencoded): 
 >>>deviceID: string
 
-#### OFEI部分
+
+##### API(3)- testResponseTime
+* 測試所有n比request-callback的響應時間
+>
+>HTTP Method: POST 
+>URL:http://localhost:3001/exp/testResponseTime
+>>Body(x-www-form-urlencoded): 
+>>>csvName: string(輸出的csv名稱)
+>>>resquestTimes：uint (要發出request的次數)
+>>>pattern: oei (pattern名稱)
+>>>deviceID:uint (名稱也會反應在輸出的csv檔案)
+
+
+#### 
 ##### API(1)-deploy QueryRegistry contract
 * 部署合約
 >HTTP Method: POST 

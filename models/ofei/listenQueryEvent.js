@@ -19,11 +19,11 @@ module.exports = async function listenQueryEvent() {
         .on('data', function (event) {
             //let result = {};
             //result = event.returnValues;
-            fs.writeFileSync('./Edge_publicKey.txt', event.returnValues.whisperPK);
-            console.log(`成功監聽到offchainQueryInfo\nwhisperPK:${event.returnValues.whisperPK}`);
-            console.log(`向Edge發出whisper`);
+            //fs.writeFileSync('./Edge_publicKey.txt', event.returnValues.whisperPK);
+            console.log(`成功監聽到offchainQueryInfo\nwhisperPK:${event.returnValues.whisperPK}\n向Edge發出whisper`);
             let info ={};
-            info.msg = `love 俊安${i++}`;
+            info.whisperPK= event.returnValues.whisperPK;
+            info.msg = `${event.returnValues.identifier}`;
             request.post({
                 url: "http://localhost:3002/ofei/dataCallbackByWhisper",
                 body: info,

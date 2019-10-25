@@ -25,7 +25,8 @@ module.exports ={
         bytecode: OFEI_QueryRegistry_Bytecode,
     },
     geth: {
-        account: `0xe8902cf406d7547fc3f69a2f463eb1463aa6b978`,
+        //account:`0x04a733ba681d4d6effd8eeb39ed274b38fcdb0ca`,
+        account: `0xbf5b498715df592d30d66cc5d1b770182c0c45f2`,//device的帳戶
         //暫時不用
         password: process.env.password,
         gethWebsocketUrl:`ws://localhost:8546`,

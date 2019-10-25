@@ -15,15 +15,11 @@ module.exports = async function callback(data) {
     let QueryRegistry = new web3.eth.Contract(QueryRegistry_Abi,QueryRegistry_Address);
 
     //取得目前geth中第一個account
-    let nowAccount = "";
-    await web3.eth.getAccounts((err, res) => { nowAccount = res[0] });
+	 let nowAccount = config.geth.account;
+    /*let nowAccount = "";
+    await web3.eth.getAccounts((err, res) => { nowAccount = res[0] });*/
     // 解鎖
 
-    let unlock = await unlockAccount(nowAccount,password);
-    if (!unlock) {
-        console.log(`not unlock`);
-        return;
-    }
 
     return new Promise((resolve, reject) => {
         console.log(data);

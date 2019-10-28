@@ -23,7 +23,7 @@ module.exports = async function listenQueryEvent() {
             console.log(`成功監聽到offchainQueryInfo\nwhisperPK:${event.returnValues.whisperPK}\n向Edge發出whisper`);
             let info ={};
             info.whisperPK= event.returnValues.whisperPK;
-            info.msg = `${event.returnValues.identifier}`;
+            info.msg = `${event.returnValues.queryTopic}`;
             request.post({
                 url: "http://localhost:3002/ofei/dataCallbackByWhisper",
                 body: info,

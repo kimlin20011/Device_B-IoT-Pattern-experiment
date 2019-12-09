@@ -40,10 +40,10 @@ contract QueryRegistry {
     
     //the device has to callback from this function
     function callback(string memory _data,bytes32 _identifier) public {
-        require(vaildDevices[msg.sender],"invaild Device");
+        //require(vaildDevices[msg.sender],"invaild Device");
         require(validateQueries[_identifier],"invaild identifier");
         //to ensure the right of trusted user
-        delete validateQueries[_identifier];
+        //delete validateQueries[_identifier];
         emit UploadEvent(identifier_deviceID[_identifier],_data,now,_identifier);
     }
 }

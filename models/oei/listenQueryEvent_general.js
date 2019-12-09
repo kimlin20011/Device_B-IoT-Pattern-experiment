@@ -27,22 +27,18 @@ module.exports = async function listenQueryEvent() {
             //console.log(result);
 
             console.log(`執行callback函數\n`);
-            //result.callbackData = `callbackDataTest`
-            for (let i = 0; i < data.deviceID; i++){
-                result.callbackData = i;
-                request.post({
-                    url: "http://localhost:3002/oei/callback",
-                    body: result,
-                    json: true,
-                }, function (err, httpResponse, body) {
-                    if (err) {
-                        console.error(err)
-                    } else {
-                        console.log(body);
-                    }
-                });
-            }
-
+            result.callbackData = `callbackDataTest`
+            request.post({
+                url: "http://localhost:3002/oei/callback",
+                body: result,
+                json: true,
+            }, function (err, httpResponse, body) {
+                if (err) {
+                    console.error(err)
+                } else {
+                    console.log(body);
+                }
+            });
 
         })
         .on('error', function (error) {

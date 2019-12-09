@@ -22,7 +22,7 @@ module.exports = async function callback(data) {
 
 
     return new Promise((resolve, reject) => {
-        console.log(data);
+        //console.log(data);
         let result = {};
 
         QueryRegistry.methods
@@ -36,7 +36,7 @@ module.exports = async function callback(data) {
                 result.status = true;
                 let result_event = JSON.stringify(result);
                 fs.writeFileSync('./callbackResult.json', result_event);
-                console.log(`callback交易成功`)
+                //console.log(`callback交易成功`)
                 resolve(result);
             })
             .on("error", function (error) {

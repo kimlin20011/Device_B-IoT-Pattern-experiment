@@ -15,17 +15,19 @@ module.exports ={
     Consumer: {
         abi: Consumer_Abi,
         bytecode: Consumer_Bytecode,
+        address:`0x0C76a8f2BF6583EA2FFb6CaAE8DFFBB32c584C48`,
     },
     QueryRegistry: {
         abi: QueryRegistry_Abi,
         bytecode: QueryRegistry_Bytecode,
+        address:`0xd0c066CeABA9813E13CFa78B263e6398C71A31bF`,
     },
     OFEI_QueryRegistry: {
         abi: OFEI_QueryRegistry_Abi,
         bytecode: OFEI_QueryRegistry_Bytecode,
     },
     geth: {
-        //account:`0x04a733ba681d4d6effd8eeb39ed274b38fcdb0ca`,
+        //account:`0xee860c9a2d17121a09222f69e1dc83a1351b90eb`,
         account: `0x37b6427b6e45f41263571eb550c4b07050529aba`,//device的帳戶
         //暫時不用
         password: process.env.password,

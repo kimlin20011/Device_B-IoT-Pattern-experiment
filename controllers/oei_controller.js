@@ -40,11 +40,22 @@ module.exports = {
         }
     },
     async listenQueryEvent(ctx) {
+        let formData = ctx.request.body;
+        let res = {};
         try {
             let listenQueryEvent_result = await listenQueryEvent();
-            ctx.body = listenQueryEvent_result;
+            res = listenQueryEvent_result;
+            ctx.body = res;
         } catch (error) {
             ctx.body = error;
         }
     },
+    // async listenQueryEvent(ctx) {
+    //     try {
+    //         let listenQueryEvent_result = await listenQueryEvent();
+    //         ctx.body = listenQueryEvent_result;
+    //     } catch (error) {
+    //         ctx.body = error;
+    //     }
+    // },
 }

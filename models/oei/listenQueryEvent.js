@@ -1,6 +1,6 @@
 //emit QueryEvent(_deviceID,now,msg.sender,identifier);  //callbackAddress means the contract who call QueryRegistry
 "use strict";
-const fs = require('fs');
+//const fs = require('fs');
 const request = require('request');
 const config = require('../../configs/config');
 let gethWebsocketUrl = config.geth.gethWebsocketUrl;
@@ -10,9 +10,8 @@ const web3 = new Web3(Web3.givenProvider || gethWebsocketUrl);
 
 module.exports = async function listenQueryEvent() {
     let QueryRegistry_Abi = config.QueryRegistry.abi;
-    //取得目前geth中第一個account
-    let QueryRegistry_Address = fs.readFileSync('./QueryRegistry_Address.txt').toString();
-    console.log(`QueryRegistry_Address:${QueryRegistry_Address}`)
+    //let QueryRegistry_Address = fs.readFileSync('./QueryRegistry_Address.txt').toString();
+    let QueryRegistry_Address = config.QueryRegistry.address;
     let QueryRegistry = new web3.eth.Contract(QueryRegistry_Abi, QueryRegistry_Address);
 
     QueryRegistry.events.QueryEvent({})
@@ -21,14 +20,14 @@ module.exports = async function listenQueryEvent() {
             result.deviceID = event.returnValues.deviceID;
             result.timestamp = event.returnValues.timestamp;
             result.identifier = event.returnValues.identifier;
-            let result_event = JSON.stringify(result);
-            fs.writeFileSync('./queryEventListen.json', result_event);
+            //let result_event = JSON.stringify(result);
+            //fs.writeFileSync('./queryEventListen.json', result_event);
             console.log(`成功監聽到QueryRegistry event\n`);
             //console.log(result);
 
             console.log(`執行callback函數\n`);
             //result.callbackData = `callbackDataTest`
-            for (let i = 0; i < data.deviceID; i++){
+            for (let i = 0; i < result.deviceID; i++){
                 result.callbackData = i;
                 request.post({
                     url: "http://localhost:3002/oei/callback",
@@ -36,14 +35,12 @@ module.exports = async function listenQueryEvent() {
                     json: true,
                 }, function (err, httpResponse, body) {
                     if (err) {
-                        console.error(err)
+                        console.error(err);
                     } else {
                         console.log(body);
                     }
                 });
             }
-
-
         })
         .on('error', function (error) {
             let result = {};

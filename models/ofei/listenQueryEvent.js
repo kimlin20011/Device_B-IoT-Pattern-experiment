@@ -12,7 +12,7 @@ module.exports = async function listenQueryEvent() {
     //取得目前geth中第一個account
     let OFEI_QueryRegistry_Address = fs.readFileSync('./OFEI_QueryRegistry_Address.txt').toString();
     let OFEI_QueryRegistry = new web3.eth.Contract(OFEI_QueryRegistry_Abi, OFEI_QueryRegistry_Address);
-    let i = 0 ;
+    //let i = 0;
 
 
     OFEI_QueryRegistry.events.offchainQueryInfo({})
@@ -21,21 +21,24 @@ module.exports = async function listenQueryEvent() {
             //result = event.returnValues;
             //fs.writeFileSync('./Edge_publicKey.txt', event.returnValues.whisperPK);
             console.log(`成功監聽到offchainQueryInfo\nwhisperPK:${event.returnValues.whisperPK}\n向Edge發出whisper`);
-            let info ={};
-            info.whisperPK= event.returnValues.whisperPK;
-            info.msg = `${event.returnValues.queryTopic}`;
-            request.post({
-                url: "http://localhost:3002/ofei/dataCallbackByWhisper",
-                body: info,
-                json: true,
-            }, function (err, httpResponse, body) {
-                if (err) {
-                    console.error(err)
-                } else {
-                    console.log(body);
+            let info = {};
+            info.whisperPK = event.returnValues.whisperPK;
+            info.deviceID = event.returnValues.deviceID;
+            //info.msg = `${event.returnValues.queryTopic}`;
+            for (let i = 0; i < info.deviceID; i++) {
+                request.post({
+                    url: "http://localhost:3002/ofei/dataCallbackByWhisper",
+                    body: info,
+                    json: true,
+                }, function (err, httpResponse, body) {
+                    if (err) {
+                        console.error(err)
+                    } else {
+                        console.log(body);
 
-                }
-            });
+                    }
+                });
+            }
         })
         .on('error', function (error) {
             let result = {};

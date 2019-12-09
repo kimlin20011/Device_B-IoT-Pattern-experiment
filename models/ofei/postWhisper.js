@@ -16,7 +16,7 @@ module.exports =  function post_whisper(data) {
             pubKey: data.whisperPK,
             ttl: 10,
             payload: message_content,
-            powTime: 3,
+            powTime: 20,
             powTarget: 0.5
         });
         resolve(`向Edge發出 123`);

@@ -26,7 +26,7 @@ module.exports ={
     },
     geth: {
         //account:`0x04a733ba681d4d6effd8eeb39ed274b38fcdb0ca`,
-        account: `0xbf5b498715df592d30d66cc5d1b770182c0c45f2`,//device的帳戶
+        account: `0x37b6427b6e45f41263571eb550c4b07050529aba`,//device的帳戶
         //暫時不用
         password: process.env.password,
         gethWebsocketUrl:`ws://localhost:8546`,

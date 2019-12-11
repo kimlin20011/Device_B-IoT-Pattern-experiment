@@ -28,7 +28,6 @@ module.exports = async function getPIDusage(data) {
                 //   elapsed: 6650000,     // ms since the start of the process
                 //   timestamp: 864000000  // ms since epoch
                 // }
-                console.log(stats)
                 //let timestamp = Date.now();
                 let str = `${index},${stats[`${koa_pid}`].memory},${stats[`${koa_pid}`].cpu},${stats[`${geth_pid}`].memory},${stats[`${geth_pid}`].cpu},${stats[`${koa_pid}`].timestamp}\n`
                 index++;

@@ -1,6 +1,6 @@
 //emit QueryEvent(_deviceID,now,msg.sender,identifier);  //callbackAddress means the contract who call QueryRegistry
 "use strict";
-//const fs = require('fs');
+const fs = require('fs');
 const request = require('request');
 const config = require('../../configs/config');
 let gethWebsocketUrl = config.geth.gethWebsocketUrl;

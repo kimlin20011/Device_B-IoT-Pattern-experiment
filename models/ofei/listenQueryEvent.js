@@ -10,7 +10,8 @@ const request = require('request');
 module.exports = async function listenQueryEvent() {
     let OFEI_QueryRegistry_Abi = config.OFEI_QueryRegistry.abi;
     //取得目前geth中第一個account
-    let OFEI_QueryRegistry_Address = fs.readFileSync('./OFEI_QueryRegistry_Address.txt').toString();
+    //let OFEI_QueryRegistry_Address = fs.readFileSync('./OFEI_QueryRegistry_Address.txt').toString();
+    let OFEI_QueryRegistry_Address = config.OFEI_QueryRegistry.address;
     let OFEI_QueryRegistry = new web3.eth.Contract(OFEI_QueryRegistry_Abi, OFEI_QueryRegistry_Address);
     //let i = 0;
 

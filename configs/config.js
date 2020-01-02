@@ -31,6 +31,7 @@ module.exports ={
     OFEI_QueryRegistry: {
         abi: OFEI_QueryRegistry_Abi,
         bytecode: OFEI_QueryRegistry_Bytecode,
+        address:`0x246594e0858c610Ed90c92919D2b0f8B287d67e8`,
     },
     geth: {
         //account:`0xee860c9a2d17121a09222f69e1dc83a1351b90eb`,
